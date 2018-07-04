@@ -8,12 +8,16 @@ var Engine = Matter.Engine,
     MouseConstraint = Matter.MouseConstraint,
     Mouse = Matter.Mouse,
     World = Matter.World,
-    Bodies = Matter.Bodies;
+    Bodies = Matter.Bodies,
+    Body = Matter.Body;
 var engine, world, runner, ground;
 
 
-// Object vars
+// Matter object vars
 var holder, string, body;
+
+// Others
+var score = 0;
 
 function setup() {
     var canvas = createCanvas(400, 400);
@@ -25,16 +29,14 @@ function setup() {
     
     // Init objects
     //  Holder
-    holder = Bodies.circle(150, 150, 5, { isStatic: true });
+    holder = Bodies.circle(width/2, 150, 5, { isStatic: true });
     //  Body
-    body = Bodies.polygon(100, 50, 5, 30);
+    body = Bodies.polygon(width/2, 260, 5, 30);
     //  String
     string = Constraint.create({
         bodyA: holder,
-        pointA: { x: -10, y: -10 },
         bodyB: body,
-        pointB: { x: -10, y: -10 },
-        stiffness: 0.5
+        stiffness: 1
     });
     //  Ground
     ground = Bodies.rectangle(width/2, height, width, 10, { isStatic: true })
@@ -56,14 +58,17 @@ function setup() {
         });
     World.add(world, mouseConstraint);
 
-    //
-    console.log(world);
+    //console.log(world);
 }
 
-
-
 function draw() {
-    background(100);
+    background(150);
+
+    // Action
+    var t = engine.timing.timestamp/1000;
+    var freq = 0.5;
+    var amp = 50;
+    holderAction(t, freq, amp);
 
     // Render bodies
     let bodies = world.bodies;
@@ -75,8 +80,19 @@ function draw() {
 
     // Tick the runner
     Runner.tick(runner, engine, 1);
+
+    // Print info
+    var s = "x,y: " + Math.round(body.position.x) + " , " + Math.round(body.position.y);
+    text(s, 10, 30);
+    var s = "time: " + Math.round(t) + " sec";
+    text(s, 10, 45);
+    var s = "score: " + score;
+    text(s, 10, 60);
+
+    // Score
+    score = Math.round(Math.max(score, 260 - body.position.y));
     
-    //console.log(world); noLoop();
+    //console.log(runner); noLoop();
 }
 
 function showBodies(obj){
@@ -93,4 +109,13 @@ function showConstraint(obj){
         obj.bodyA.position.y,
         obj.bodyB.position.x,
         obj.bodyB.position.y);
+}
+
+function holderAction(t, freq, amp){
+    var omega = 2*Math.PI*freq;
+    Body.setPosition( holder,
+        {
+            x: width/2 + amp*Math.sin(t*omega),
+            y: 150
+        });
 }
