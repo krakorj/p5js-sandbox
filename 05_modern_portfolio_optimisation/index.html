@@ -10,12 +10,22 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 </head>
 <body>
-    <h1>P5 script - Modern portfolio theory</h1>
+    <div class="container">
+        <h1>P5 script - Modern portfolio theory</h1>
 
-    <p><a href="https://en.wikipedia.org/wiki/Modern_portfolio_theory">Modern portfolio theory (MPT)</a> , or mean-variance analysis, is a mathematical framework for assembling a 
-        portfolio of assets such that the expected return is maximized for a given level of risk</p>
-    <p>MPT is a task for Monte-carlo approach to get optimal solution for the</p>
-    <p>To run this p5.js project use a local server. For example if python installed use <i>python -m SimpleHTTPServer</i></p>
+        <p><a href="https://en.wikipedia.org/wiki/Modern_portfolio_theory">Modern portfolio theory (MPT)</a> , or mean-variance analysis, is a mathematical framework for assembling a 
+            portfolio of assets such that the expected return is maximized for a given level of risk</p>
+        <p>MPT is a task for <a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte-Carlo method</a> to get optimal solution fast.</p>
+
+        <div class="alert alert-info">
+            <strong>Info!</strong> To run this p5.js project use a local server. 
+            For example if python installed use <code>python -m SimpleHTTPServer</code> and use <a href="http://localhost:8000">http://localhost:8000</a>
+        </div>
+
+        <div class="text-center">
+            <div id="sketch-holder"></div>
+        </div>
+    </div>
 
     <!-- Boostrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -28,5 +38,6 @@
     
     <!-- :) -->
     <script src="sketch.js"></script>
+
 </body>
 </html>

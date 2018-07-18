@@ -5,7 +5,8 @@ function preload(){
 }
 
 function setup() {
-    var canvas = createCanvas(400, 400);
+    var canvas = createCanvas(600, 450);
+    canvas.parent('sketch-holder');
     img = loadImage("mpt.png");  // Load the image
 }
 
