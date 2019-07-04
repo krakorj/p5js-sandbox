@@ -1,9 +1,11 @@
 // Parameters
 var mi = 45; // nadhled
 var fi = 45; // otoceni
-var xj = 0.3; var yj = 0.3; var zj = 0.6; // jednotky
-var sx = 2; var sy = 2; var sz = 0; // posun
+var xj = 0.4; var yj = 0.4; var zj = 0.4; // jednotky
+var sx = 8; var sy = 8; var sz = 0; // posun
 var h = 10;
+let mxo = 0.0;
+let myo = 0.0;
 
 // The statements in the setup() function 
 // execute once when the program begins
@@ -13,7 +15,11 @@ function setup() {
     // color mode
     colorMode(HSB, 100);
     textSize(10);
+    frameRate(30);
     noLoop();
+    // var update
+    sx = -1*sx; sy = -1*sy;
+    fi = radians(fi); mi = radians(mi);
 }
 
 // Fce to draw
@@ -21,8 +27,11 @@ function fce(a,b) {
     x = a*xj;
     y = b*yj;
     // -----------------
-    // z = pow((sin(x)+sin(y)),3);
-    z = pow((sin(x)+sin(y)),3);
+    // z = pow((sin(x)+sin(y)),3)/3;
+    // z = sin(pow(x,2)+pow(y,2));
+    // z = (abs(x)+abs(y))/4;
+    z = sin(pow(x,2)+pow(y,2))/(pow(x,2)+pow(y,2));
+    // z = 4*sqrt(pow(x,2)+pow(y,2))/(pow(x,2)+pow(y,2));
     // -----------------
     z = (10*z/zj+10*sz)*sin(radians(90)-mi);
     return z
@@ -34,16 +43,10 @@ function draw() {
     stroke(80, 80, 100);
     fill(70, 70, 100);
     // Natoceni
-    fi = radians(fi);
-    mi = radians(mi);
     a1 = 160 + 65*sin(fi) - 85*cos(fi);
     a2 = 95 + sin(mi)*(65*cos(fi) + 85*sin(fi));
     a2 = a2+1/4*(190-a2)
-    if (a1 < 0 || a1 > 319 || a2 < 0 || a2 > 192)
-        console.log("OK");
-    // Posunuti pocatku
-    sx = -1*sx; 
-    sy = -1*sy;
+    // if (a1 < 0 || a1 > 319 || a2 < 0 || a2 > 192) console.log("OK");
     // Ramecek
     line(0, 0, 319, 0);
     line(319, 0, 319, 191);
@@ -94,11 +97,51 @@ function draw() {
     }
 }
 
-// Mouse interaction
+// Mouse interaction - rotate
+var origfi, origmi;
+
+function mousePressed() {
+    mxo = map(mouseX, 0, width, -180, 180);
+    myo = map(mouseY, 0, width, -180, 180);
+    origfi = fi;
+    origmi = mi;
+}
+
 function mouseDragged() {
-    fi = mouseX*0.3;
-    mi = mouseY*0.3;
+    mx = map(mouseX, 0, width, -180, 180);
+    my = map(mouseY, 0, height, -180, 180);
+    dfi = round((mx - mxo));
+    dmi = round((my - myo));
+    fi = origfi + radians(dfi);
+    mi = origmi + radians(dmi);
     clear();
     redraw();
 }
+
+// Wheel - zoom
+function mouseWheel(event) {
+    xj += 0.01*event.delta/133;
+    yj += 0.01*event.delta/133;
+    zj += 0.01*event.delta/133;
+    console.log(xj + "," + yj + "," + zj);
+    clear();
+    redraw();
+}
+
+// Keyboard - X/Y shift
+function keyPressed() {
+    if (keyCode === LEFT_ARROW) {
+        sx += -1;
+    } else if (keyCode === RIGHT_ARROW) {
+        sx += 1;
+    } else if (keyCode === UP_ARROW) {
+        sy += -1;
+    } else if (keyCode === DOWN_ARROW) {
+        sy += 1;
+    }
+    console.log(sx + "," + sy);
+    clear();
+    redraw();
+}
+
 
